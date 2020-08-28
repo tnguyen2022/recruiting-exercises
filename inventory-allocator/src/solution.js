@@ -1,3 +1,4 @@
+//return the cheapest shipment order
 function getCheapestShipment(shipments, inventory_distribution) {
   let order = [];
 
@@ -15,6 +16,7 @@ function getCheapestShipment(shipments, inventory_distribution) {
   return order;
 }
 
+//given order of one item, returns a map of the cheapest way to ship that order item
 const distributeItem = (item, amount, inventory_distribution) => {
   let distribution = [];
   let itemAmount = amount;
@@ -38,6 +40,7 @@ const distributeItem = (item, amount, inventory_distribution) => {
   return [];
 };
 
+//returns the amount that a warehouse would allocate for a given item order amount
 const getAmountAllocation = (amount, warehouse_amount) => {
   if (amount - warehouse_amount <= 0) {
     return amount;
@@ -45,6 +48,7 @@ const getAmountAllocation = (amount, warehouse_amount) => {
   return warehouse_amount;
 };
 
+//adds the map of the cheapest shipment order for one item to the current array of cheapest shipments order
 const addDistribution = (distribution, order) => {
   for (let i = 0; i < distribution.length; i++) {
     let warehouse = Object.keys(distribution[i])[0];

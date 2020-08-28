@@ -101,3 +101,38 @@ test("Order can be shipped across a lot of different warehouses", () => {
     { okay: { apple: 2 } },
   ]);
 });
+
+test("Order can be shipped across multiple warehouses", () => {
+  expect(
+    getCheapestShipment({ apple: 10, banana: 10, orange: 10 }, [
+      { name: "owd", inventory: { orange: 10 } },
+      { name: "dm", inventory: { apple: 10 } },
+      { name: "best", inventory: { banana: 10 } },
+    ])
+  ).toStrictEqual([
+    { dm: { apple: 10 } },
+    { best: { banana: 10 } },
+    { owd: { orange: 10 } },
+  ]);
+});
+
+test("Order cannot be shipped because not enough inventory", () => {
+  expect(
+    getCheapestShipment({ apple: 15 }, [
+      { name: "owd", inventory: { apple: 1, orange: 10 } },
+      { name: "dm", inventory: { apple: 2, orange: 10 } },
+      { name: "best", inventory: { apple: 5, orange: 10 } },
+      { name: "okay", inventory: { apple: 3, orange: 10 } },
+      { name: "bad", inventory: { apple: 2, orange: 10 } },
+    ])
+  ).toStrictEqual([]);
+});
+
+test("Order can be shipped from first warehouse rather than from multiple", () => {
+  expect(
+    getCheapestShipment({ orange: 7 }, [
+      { name: "owd", inventory: { apple: 1, orange: 10 } },
+      { name: "dm", inventory: { apple: 2, orange: 10 } },
+    ])
+  ).toStrictEqual([{ owd: { orange: 7 } }]);
+});
